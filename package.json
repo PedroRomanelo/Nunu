@@ -1,0 +1,30 @@
+{
+  "name": "@romanelo/nunu",
+  "version": "1.0.0",
+  "description": "A simple pop-up component",
+  "keywords": [
+    "popup",
+    "pop-up",
+    "library",
+    "javascript",
+    "frontend",
+    "modal",
+    "coupon",
+    "promo"
+  ],
+  "homepage": "https://github.com/PedroRomanelo/Nunu#readme",
+  "bugs": {
+    "url": "https://github.com/PedroRomanelo/Nunu/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PedroRomanelo/Nunu.git"
+  },
+  "license": "MIT",
+  "author": "Pedro Romanelo",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
