@@ -18,7 +18,7 @@ export interface TriggerConfig { // configuração para o gatilho
 
 export interface BasePopupConfig { // interface base todos os popups
     type: PopopType;
-    tittle: string;
+    title: string;
     text?: string;
     imageUrl: string;
     position?: PopupPosition;
@@ -33,6 +33,12 @@ export interface CouponPopupConfig extends BasePopupConfig { // interface para p
     redirectUrl: string;
 }
 
+export interface CallToActionPopupConfig extends BasePopupConfig { // interface para popup de call to action
+    type: 'call-toaction';
+    buttonText: string;
+    redirectUrl: string;
+}
+
 export interface LeadCapturePopupConfig extends BasePopupConfig { // interface para popup de lead capture
     type: 'lead-capture';
     fields: {
@@ -43,3 +49,38 @@ export interface LeadCapturePopupConfig extends BasePopupConfig { // interface p
     buttonText?: string;
 }
 
+export interface FeedbackPopupConfig extends BasePopupConfig { // interface para popup de feedback
+    type: 'feedback';
+    feedbackType: FeedbackType;
+}
+
+//Aqui unimos todos os tipos de configurações
+export type PopupConfig = CouponPopupConfig | CallToActionPopupConfig | LeadCapturePopupConfig | FeedbackPopupConfig;
+
+export interface feedbackData { // Interface para dados de feedback
+
+    type: FeedbackType;
+    value: number | string  ; // número para stars (1-5), string para emoji/thumbs
+}
+
+export interface LeadData { // Interface para dados de lead
+    name?: string;
+    email?: string;
+    phone?: string;
+}
+
+export interface PopupLibraryConfig { // interface para configuração da biblioteca de popups
+    reapperInterval?: number; //h
+    defaultPosition?: PopupPosition;
+    theme?:{
+        primaryColor: string;
+        backgroundColor: string;
+        textColor: string;
+        borderRadius: string;
+    }
+}
+
+export interface StorageData { // Interface para dados armazenados no localStorage
+    lastShown: number; // timestamp da última vez que o popup foi mostrado
+    popupId: string; // id do popup
+}
