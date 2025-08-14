@@ -57,7 +57,7 @@ export interface FeedbackPopupConfig extends BasePopupConfig { // interface para
 //Aqui unimos todos os tipos de configurações
 export type PopupConfig = CouponPopupConfig | CallToActionPopupConfig | LeadCapturePopupConfig | FeedbackPopupConfig;
 
-export interface feedbackData { // Interface para dados de feedback
+export interface FeedbackData { // Interface para dados de feedback
 
     type: FeedbackType;
     value: number | string  ; // número para stars (1-5), string para emoji/thumbs
