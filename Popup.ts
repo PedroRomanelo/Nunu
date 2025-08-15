@@ -97,8 +97,36 @@ export class Popup {
         }
     }
 
-    renderCouponContent(): void {
-        console.log("renderCouponContent");
+    private renderCouponContent(config: CouponPopupConfig): void {
+        const couponContainer = document.createElement("div");
+        couponContainer.classList.add("coupon-container");
+
+        const couponCodeDisplay = document.createElement("input");
+        couponCodeDisplay.type = "text";
+        couponCodeDisplay.value = config.couponCode;
+        couponCodeDisplay.readOnly = true;
+        couponCodeDisplay.classList.add("coupon-code-display");
+
+        const copyButton = document.createElement("button");
+        copyButton.classList.add("popup-button", "copy-coupon-button");
+        copyButton.textContent = "Copiar";
+
+        const message = document.createElement("span");
+        message.classList.add("copy-message");
+
+        copyButton.addEventListener("click", () => {
+            navigator.clipboard.writeText(config.couponCode).then(() => {
+                message.textContent = "Copiado !";
+                setTimeout(() => message.textContent = "", 2000);
+            }).catch(err => {
+                console.error("FALHA ! Tente copiar o cupom novamente !", err);
+                message.textContent = "Erro ao copiar !";
+            });
+        });
+        couponContainer.appendChild(couponCodeDisplay);
+        couponContainer.appendChild(copyButton);
+        couponContainer.appendChild(message);
+        this.container.appendChild(couponContainer);
     }
 
     renderCallToActionContent(): void {
