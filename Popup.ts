@@ -98,39 +98,46 @@ export class Popup {
     }
 
     private renderCouponContent(config: CouponPopupConfig): void {
-        const couponContainer = document.createElement("div");
-        couponContainer.classList.add("coupon-container");
+        const couponContainer = document.createElement("div"); //cria div
+        couponContainer.classList.add("coupon-container"); //adiciona a classe para o css
 
-        const couponCodeDisplay = document.createElement("input");
-        couponCodeDisplay.type = "text";
-        couponCodeDisplay.value = config.couponCode;
-        couponCodeDisplay.readOnly = true;
-        couponCodeDisplay.classList.add("coupon-code-display");
+        const couponCodeDisplay = document.createElement("input"); //cria o input para exibir o código do cupom
+        couponCodeDisplay.type = "text"; //define o tipo do input
+        couponCodeDisplay.value = config.couponCode; //colocar dentro do input o código
+        couponCodeDisplay.readOnly = true; //o input se torna somente leitura
+        couponCodeDisplay.classList.add("coupon-code-display"); //classe css para o campo que mostra o código
 
-        const copyButton = document.createElement("button");
-        copyButton.classList.add("popup-button", "copy-coupon-button");
-        copyButton.textContent = "Copiar";
+        const copyButton = document.createElement("button"); //cria o botão
+        copyButton.classList.add("popup-button", "copy-coupon-button"); //classe genérica do botão popup e uma especifica para copiar o cupom
+        copyButton.textContent = "Copiar"; //texto do botão
 
-        const message = document.createElement("span");
-        message.classList.add("copy-message");
+        const message = document.createElement("span"); //cria o elemento que mostra a mensagem de sucesso
+        message.classList.add("copy-message"); //classe css para o elemento que mostra a mensagem
 
         copyButton.addEventListener("click", () => {
-            navigator.clipboard.writeText(config.couponCode).then(() => {
-                message.textContent = "Copiado !";
-                setTimeout(() => message.textContent = "", 2000);
+            navigator.clipboard.writeText(config.couponCode).then(() => { //Usa a API de clipboard do navegador para copiar o código do cupom. Retorna uma promisse
+                message.textContent = "Copiado !"; //altera o texto do elemento que mostra a mensagem
+                setTimeout(() => message.textContent = "", 2000); //limpa o elemento após 2 segundos
             }).catch(err => {
-                console.error("FALHA ! Tente copiar o cupom novamente !", err);
-                message.textContent = "Erro ao copiar !";
+                console.error("FALHA ! Tente copiar o cupom novamente !", err); 
+                message.textContent = "Erro ao copiar !"; 
             });
         });
-        couponContainer.appendChild(couponCodeDisplay);
-        couponContainer.appendChild(copyButton);
-        couponContainer.appendChild(message);
-        this.container.appendChild(couponContainer);
+        couponContainer.appendChild(couponCodeDisplay); // Coloca o <input> dentro da <div> container.
+        couponContainer.appendChild(copyButton); // Coloca o botão dentro da <div> container.
+        couponContainer.appendChild(message); //Coloca o <span> de mensagens dentro da <div> container.
+        this.container.appendChild(couponContainer); //injeta o container completo no elemento raiz da classe popup-container
     }
 
-    renderCallToActionContent(): void {
-        console.log("renderCallToActionContent");
+    private renderCallToActionContent(config: CallToActionPopupConfig): void {
+        const button = document.createElement("button");
+        button.classList.add("popup-button");
+        button.textContent = config.buttonText;
+        button.addEventListener("click", () => {
+            window.location.href = config.redirectUrl; // Redireciona o usuário para a URL definida em config.redirectUrl.
+            this.hide(); //chama o método hide para fecha o popup.
+        });
+        this.container.appendChild(button);
     }
 
     renderLeadCaptureContent(): void {
