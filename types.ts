@@ -1,4 +1,4 @@
-export type PopopType = 'coupon' | 'call-toaction' | 'lead-capture' | 'feedback';  // Tipos de pop-up disponíveis
+export type PopopType = 'coupon' | 'call-to-action' | 'lead-capture' | 'feedback';  // Tipos de pop-up disponíveis
 
 export type FeedbackType = 'stars' | 'emoji' | 'thumbs';  // Tipos de feedback disponíveis
 
@@ -34,7 +34,7 @@ export interface CouponPopupConfig extends BasePopupConfig { // interface para p
 }
 
 export interface CallToActionPopupConfig extends BasePopupConfig { // interface para popup de call to action
-    type: 'call-toaction';
+    type: 'call-to-action';
     buttonText: string;
     redirectUrl: string;
 }
