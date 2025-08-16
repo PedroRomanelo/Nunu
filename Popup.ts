@@ -15,7 +15,7 @@ export class Popup {
 
     private createOverlay(): HTMLElement { //retorna um elemento HTML
         const overlay = document.createElement("div"); 
-        overlay.classList.add("popup-overlay");
+        overlay.classList.add("popup-overlay"); //segue a lódiga de 1. selecionar o objeto 2.class propriedade 3. método
         return overlay;
     }
 
@@ -140,8 +140,48 @@ export class Popup {
         this.container.appendChild(button);
     }
 
-    renderLeadCaptureContent(): void {
-        console.log("renderLeadCaptureContent");
+    private renderLeadCaptureContent(config: LeadCapturePopupConfig): void {
+        const form = document.createElement("form");
+        form.classList.add("lead-capture-form");
+
+        if (config.fields.name) {
+            const input = document.createElement("form");
+            input.type = "text";
+            input.name = "name";
+            input.placeholder = "Nome";
+            input.classList.add("form-input");
+            form.appendChild(input);
+        }
+
+        if (config.fields.email) {
+            const input = document.createElement("input");
+            input.type = "email";
+            input.name = "email";
+            input.placeholder = "Email";
+            input.required = true;
+            input.classList.add("form-input");
+            form.appendChild(input);
+        }
+
+        const submitButton = document.createElement("button");
+        submitButton.type = "submit";
+        submitButton.classList.add("popup-button")
+        submitButton.textContent = config.buttonText || "Enviar"; //texto do botão
+        form.appendChild(submitButton);
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const formData: LeadData = {};
+            if (config.fields.name) formData.name = (form.elements.namedItem("name") as HTMLInputElement)?.value;
+            if (config.fields.email) formData.email = (form.elements.namedItem("email") as HTMLInputElement)?.value;
+            if (config.fields.phone) formData.phone = (form.elements.namedItem("phone") as HTMLInputElement)?.value;
+
+            config.onSubmit?.(formData);
+            this.hide();
+        });
+
+        this.container.appendChild(form);
+
     }
 
     renderFeedbackContent(): void {
