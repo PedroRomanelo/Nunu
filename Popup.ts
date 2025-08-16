@@ -184,7 +184,42 @@ export class Popup {
 
     }
 
-    renderFeedbackContent(): void {
-        console.log("renderFeedbackContent");
+    renderFeedbackContent(config: FeedbackPopupConfig): void {
+        const feedbackContainer = document.createElement("div");
+        feedbackContainer.classList.add("feedback-container");
+
+        switch (config.feedbackType) {
+            case "stars":
+                for (let i = 1; i <= 5; i++) {
+                    const star = document.createElement("span");
+                    star.innerHTML = "&#9733;"; //cria o ícone de estrela
+                    star.dataset.value = i.toString(); //armazena o valor do ícone de estrela
+                    star.addEventListener("click", () => {
+                        config.onSubmit?.({ type: "stars", value: i } as FeedbackData);
+                        this.hide();
+                    });
+                    feedbackContainer.appendChild(star);
+                };
+                break;
+
+            case "thumbs":
+              const thumbs = ['👍', '👎'];
+              thumbs.forEach(thumb => {
+                const thumbBtn = document.createElement("button");
+                thumbBtn.classList.add("feedback-button");
+                thumbBtn.textContent = thumb;
+                thumbBtn.addEventListener("click", () => {
+                    config.onSubmit?.({ type: "thumbs", value: thumb} as FeedbackData);
+                });
+                feedbackContainer.appendChild(thumbBtn);
+              });
+              break
+        }
+        this.container.appendChild(feedbackContainer);
     }
+    
+    public show(): void {
+        this.overlay.classList.add("active");
+    }
+
 }   
