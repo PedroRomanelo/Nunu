@@ -11,6 +11,13 @@ export class Popup {
         this.overlay = this.createOverlay();
         this.container = this.createContainer();
         this.closeButton = this.createCloseButton();
+
+        this.container.appendChild(this.closeButton);
+        this.renderContent();
+        this.overlay.appendChild(this.container);
+        document.body.appendChild(this.overlay);
+
+        this.attachEventListeners();
     }
 
     private createOverlay(): HTMLElement { //retorna um elemento HTML
@@ -23,7 +30,7 @@ export class Popup {
         const container = document.createElement("div");
         container.classList.add("popup-container");
         if(this.config.position) {
-            container.classList.add(`container-${this.config.position}`);
+            container.classList.add(`position-${this.config.position}`);
         }
         return container
     }
@@ -145,7 +152,7 @@ export class Popup {
         form.classList.add("lead-capture-form");
 
         if (config.fields.name) {
-            const input = document.createElement("form");
+            const input = document.createElement("input");
             input.type = "text";
             input.name = "name";
             input.placeholder = "Nome";
@@ -160,6 +167,15 @@ export class Popup {
             input.placeholder = "Email";
             input.required = true;
             input.classList.add("form-input");
+            form.appendChild(input);
+        }
+
+        if (config.fields.phone) {
+            const input = document.createElement('input');
+            input.type = 'tel';
+            input.name = 'phone';
+            input.placeholder = 'Seu Telefone/WhatsApp';
+            input.classList.add('form-input');
             form.appendChild(input);
         }
 
@@ -203,17 +219,33 @@ export class Popup {
                 break;
 
             case "thumbs":
-              const thumbs = ['👍', '👎'];
-              thumbs.forEach(thumb => {
-                const thumbBtn = document.createElement("button");
-                thumbBtn.classList.add("feedback-button");
-                thumbBtn.textContent = thumb;
-                thumbBtn.addEventListener("click", () => {
-                    config.onSubmit?.({ type: "thumbs", value: thumb} as FeedbackData);
+                const thumbs = ['👍', '👎'];
+                thumbs.forEach(thumb => {
+                    const thumbBtn = document.createElement("button");
+                    thumbBtn.classList.add("feedback-button");
+                    thumbBtn.textContent = thumb;
+                    thumbBtn.addEventListener("click", () => {
+                        config.onSubmit?.({ type: "thumbs", value: thumb} as FeedbackData);
+                        this.hide();
+                    });
+                    feedbackContainer.appendChild(thumbBtn);
                 });
-                feedbackContainer.appendChild(thumbBtn);
-              });
-              break
+                break;
+
+            case 'emoji':
+                const emojis = ['😠', '😐', '😊']; // Pode ser configurável no futuro
+                    emojis.forEach(emoji => {
+                    const emojiBtn = document.createElement('button');
+                    emojiBtn.classList.add('feedback-emoji');
+                    emojiBtn.textContent = emoji;
+                    emojiBtn.addEventListener('click', () => {
+                        config.onSubmit?.({ type: 'emoji', value: emoji } as FeedbackData);
+                        this.hide();
+                    });
+                    feedbackContainer.appendChild(emojiBtn);
+                    });
+                break;
+                
         }
         this.container.appendChild(feedbackContainer);
     }

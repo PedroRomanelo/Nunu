@@ -1,4 +1,4 @@
-export type PopopType = 'coupon' | 'call-to-action' | 'lead-capture' | 'feedback';  // Tipos de pop-up disponíveis
+export type PopupType = 'coupon' | 'call-to-action' | 'lead-capture' | 'feedback';  // Tipos de pop-up disponíveis
 
 export type FeedbackType = 'stars' | 'emoji' | 'thumbs';  // Tipos de feedback disponíveis
 
@@ -17,7 +17,7 @@ export interface TriggerConfig { // configuração para o gatilho
 }
 
 export interface BasePopupConfig { // interface base todos os popups
-    type: PopopType;
+    type: PopupType;
     title: string;
     text?: string;
     imageUrl: string;
@@ -29,8 +29,7 @@ export interface BasePopupConfig { // interface base todos os popups
 
 export interface CouponPopupConfig extends BasePopupConfig { // interface para popup de coupon
     type: 'coupon';
-    buttonText: string;
-    redirectUrl: string;
+    couponCode: string;
 }
 
 export interface CallToActionPopupConfig extends BasePopupConfig { // interface para popup de call to action
@@ -70,13 +69,13 @@ export interface LeadData { // Interface para dados de lead
 }
 
 export interface PopupLibraryConfig { // interface para configuração da biblioteca de popups
-    reapperInterval?: number; //h
+    reappearInterval?: number; //h
     defaultPosition?: PopupPosition;
     theme?:{
-        primaryColor: string;
-        backgroundColor: string;
-        textColor: string;
-        borderRadius: string;
+        primaryColor?: string;
+        backgroundColor?: string;
+        textColor?: string;
+        borderRadius?: string;
     }
 }
 

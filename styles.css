@@ -1,0 +1,62 @@
+.popup-overlay{}
+
+.popup-container{}
+
+.popup-overlay.active .popup-container{}
+
+.popup-close-button{}
+
+.popup-image{}
+
+.popup-title{}
+
+.popup-text {}
+
+.popup-button {}
+
+.popup-button:hover {}
+
+.coupon-container {}
+
+.coupon-code-display {}
+
+.copy-message {}
+
+.lead-capture-form {}
+
+.form-input {}
+
+.form-input:focus {}
+
+.feedback-container {}
+
+.feedback-star,
+.feedback-emoji {}
+
+.feedback-thumb {}
+
+.feedback-star:hover,
+.feedback-emoji:hover,
+.feedback-thumb:hover {}
+
+.feedback-star {}
+
+.feedback-star:hover,
+.feedback-star.selected {}
+
+.popup-container.position-center {}
+
+.popup-container.position-bottom-right {}
+
+.popup-container.position-bottom-left {}
+
+.popup-container.position-top-banner {}
+
+.popup-container.position-bottom-banner {}
+
+.popup-container.position-top-banner {}
+
+.popup-container.position-bottom-banner {}
+
+/* Mobile adaptations */
+@media () {}
