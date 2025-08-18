@@ -59,4 +59,34 @@
 .popup-container.position-bottom-banner {}
 
 /* Mobile adaptations */
-@media () {}
+@media () {
+    
+  .popup-container {}
+
+  .popup-title {}
+
+  .popup-text {}
+
+  .popup-image {}
+
+  .popup-container.position-bottom-right,
+  .popup-container.position-bottom-left {}
+
+  .popup-container.position-top-banner .popup-image,
+  .popup-container.position-bottom-banner .popup-image {}
+
+  .popup-container.position-top-banner .popup-title,
+  .popup-container.position-bottom-banner .popup-title {}
+
+  .popup-container.position-top-banner .popup-text,
+  .popup-container.position-bottom-banner .popup-text {}
+
+  .popup-container.position-top-banner .popup-button,
+  .popup-container.position-bottom-banner .popup-button {}
+
+  .popup-close-button {}
+
+  .feedback-star,
+  .feedback-emoji,
+  .feedback-thumb {}
+}
