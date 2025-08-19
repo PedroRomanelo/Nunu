@@ -61,4 +61,102 @@ export class PopupManager {
         }
         return true;
     }
+
+    private recordPopupShown (popupId: string):void { //registra o ID do popup na data do localStorage
+        const data: StorageData = {
+            lastShown: Date.now(),
+            popupId: popupId,
+        };
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+    }
+    
+    private isMobileDevice(): boolean { //verifica se o navegador é mobile
+        return ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+    }
+
+    public show(config: PopupConfig): void {
+        const popupId = config.title.replace(/\s+/g, "-").toLowerCase(); //remove espaços e converte em minusculas - gerar Id simples
+
+        if (!this.canShowPopup(popupId)) {
+            console.log(`popup "${config.title}" não pode ser exibido ainda`);
+            return;
+        }
+        
+        if (this.activePopup) {
+            this.activePopup.hide();
+        }
+
+        let finalPosition = config.position || this.config.defaultPosition;
+        if (this.isMobileDevice()) {
+            if (finalPosition === "bottom-right" || finalPosition === "bottom-left") {
+                finalPosition = "bottom-banner";
+            }
+        }
+
+        this.activePopup = new Popup ({
+            ...config,
+            position: finalPosition,
+            onClose: () => {
+                this.recordPopupShown(popupId);
+                config.onClose?.();
+                this.activePopup = null;
+            },
+        });
+
+        const trigger = config.trigger;
+        if (trigger) {
+            this.setupTrigger (trigger, () => this.activePopup?.show());
+        } else {
+            this.activePopup.show();
+        }
+    }
+
+    setupTrigger(trigger: TriggerConfig, callback: () => void): void {
+        switch (trigger.type) {
+            case "time":
+                setTimeout(callback, trigger.delay || 0);
+                break;
+            case "scroll":
+                const scrollHandler = () => {
+                    const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                    if (scrollPercentage >= (trigger.scrollPercentage || 50)) {
+                        callback();
+                        window.removeEventListener("scroll", scrollHandler);
+                    }
+                };
+                window.addEventListener("scroll", scrollHandler);
+                break;
+            case "exit-intent":
+                if(this.isMobileDevice()) {
+                    setTimeout(callback, 10000);
+                    console.warn("exit-intent trigger is not fully supported on mobile. Using a time based fallback.");
+                } else {
+                    const mouseLeaveHandler = (e:MouseEvent) => {
+                        if (e.clientY < 10 ) {
+                            callback();
+                            document.removeEventListener("mouseleave", mouseLeaveHandler);
+                        }
+                    };
+                    document.addEventListener("mouseleave", mouseLeaveHandler);
+                }
+                break;
+            case "click":
+                if(trigger.element) {
+                    const element = document.querySelector(trigger.element);
+                    if (element) {
+                        element.addEventListener("click", callback);
+                    } else {
+                        console.warn (`element with selector "${trigger.element}" not found`);
+                    }
+                }
+                break;
+        }
+    }
+
+    public hideActtivePopup(): void {
+        if(this.activePopup) {
+            this.activePopup.hide();
+            this.activePopup = null;
+        }
+    }
 }
